@@ -493,10 +493,10 @@ Distributed under the MIT License. See `LICENSE` file for more information.
 
 ## 📧 Contact
 
-**Project Maintainer:** [Your Name]  
-**Email:** your.email@example.com  
+**Project Maintainer:** Mudassar Ali Raja  
+**Email:** alikhanuana@gmail.com
 **LinkedIn:** [Your LinkedIn Profile]  
-**Demo:** [Live Demo URL]
+
 
 ---
 
