@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compliance DLP</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --red:#dc2626;--red-dark:#b91c1c;--red-light:#fef2f2;
+    --bg:#f8f9fb;--surface:#fff;--border:#e5e7eb;
+    --text:#111827;--muted:#6b7280;--light:#9ca3af;
+    --green:#16a34a;--green-bg:#f0fdf4;
+    --blue:#2563eb;--blue-bg:#eff6ff;
+    --s1:0 1px 3px rgba(0,0,0,.07);--s2:0 4px 16px rgba(0,0,0,.09);
+    --r1:8px;--r2:12px;--r3:18px;
+  }
+  body{
+    font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:var(--bg);color:var(--text);
+    width:400px;min-height:580px;max-height:700px;
+    overflow-y:auto;overflow-x:hidden;font-size:13px;line-height:1.5;
+  }
+  body::-webkit-scrollbar{width:4px}
+  body::-webkit-scrollbar-thumb{background:#d1d5db;border-radius:4px}
+
+  .hdr{
+    background:linear-gradient(135deg,#dc2626 0%,#b91c1c 55%,#7f1d1d 100%);
+    padding:15px 18px 13px;position:relative;overflow:hidden;
+  }
+  .hdr::before{content:'';position:absolute;top:-40px;right:-40px;
+    width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.06)}
+  .hdr-top{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+  .logo{width:38px;height:38px;border-radius:10px;
+    background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.3);
+    display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+  .hdr-title h1{color:#fff;font-size:14px;font-weight:700;letter-spacing:.3px}
+  .hdr-title p{color:rgba(255,255,255,.78);font-size:10.5px;margin-top:1px}
+  .pill{margin-left:auto;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);
+    color:#fff;font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;
+    display:flex;align-items:center;gap:5px;letter-spacing:.4px}
+  .dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  .profile{
+    background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);
+    border-radius:var(--r1);padding:10px 12px;
+    display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
+  }
+  .avatar{
+    width:38px;height:38px;border-radius:50%;
+    background:rgba(255,255,255,.25);border:2px solid rgba(255,255,255,.35);
+    display:flex;align-items:center;justify-content:center;
+    font-size:17px;font-weight:700;color:#fff;flex-shrink:0;
+    text-transform:uppercase;
+  }
+  .profile-mid{}
+  .p-name{font-size:13px;font-weight:700;color:#fff;letter-spacing:.2px}
+  .p-email{font-size:10.5px;color:rgba(255,255,255,.72);margin-top:1px;word-break:break-all}
+  .profile-ip{text-align:right}
+  .p-ip-label{font-size:9.5px;color:rgba(255,255,255,.6)}
+  .p-ip-val{font-size:11px;font-weight:600;color:#fff;word-break:break-all;margin-top:1px}
+
+  .body{padding:13px;display:flex;flex-direction:column;gap:11px}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);
+    padding:11px 9px;text-align:center;box-shadow:var(--s1);transition:transform .15s}
+  .stat:hover{transform:translateY(-1px);box-shadow:var(--s2)}
+  .stat.hi{border-color:#fca5a5;background:var(--red-light)}
+  .stat-n{font-size:22px;font-weight:700;color:var(--red);line-height:1;margin-bottom:3px}
+  .stat:not(.hi) .stat-n{color:var(--text);font-size:18px}
+  .stat-l{font-size:10px;color:var(--muted);font-weight:500}
+
+  .sec{background:var(--surface);border:1px solid var(--border);border-radius:var(--r2);
+    box-shadow:var(--s1);overflow:hidden}
+  .sec-hdr{padding:9px 13px;border-bottom:1px solid var(--border);
+    display:flex;align-items:center;gap:7px}
+  .sec-ico{font-size:13px}
+  .sec-ttl{font-size:12px;font-weight:700;letter-spacing:.2px}
+  .sec-body{padding:11px 13px}
+
+  .badges{display:flex;flex-wrap:wrap;gap:5px}
+  .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;
+    border-radius:20px;font-size:10.5px;font-weight:600;border:1px solid transparent}
+  .badge.g{background:var(--green-bg);color:var(--green);border-color:#bbf7d0}
+  .badge.r{background:var(--red-light);color:var(--red);border-color:#fca5a5}
+  .badge.b{background:var(--blue-bg);color:var(--blue);border-color:#bfdbfe}
+  .bdot{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+  .prow{display:flex;align-items:center;justify-content:space-between;
+    padding:6px 0;border-bottom:1px solid var(--border)}
+  .prow:last-child{border-bottom:none}
+  .pk{font-size:11.5px;color:var(--muted)}
+  .pv{font-size:11px;font-weight:600;color:var(--text);background:var(--bg);
+    padding:2px 8px;border-radius:6px;border:1px solid var(--border)}
+
+  .log-empty{text-align:center;color:var(--muted);font-size:11.5px;padding:18px 0}
+  .le{display:flex;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(--border)}
+  .le:last-child{border-bottom:none}
+  .le-dot{width:7px;height:7px;border-radius:50%;background:var(--red);margin-top:4px;flex-shrink:0}
+  .le-fn{font-size:11.5px;font-weight:600;color:var(--text);word-break:break-all}
+  .le-meta{font-size:10.5px;color:var(--muted);margin-top:1px}
+  .le-reason{font-size:10.5px;color:var(--red);margin-top:2px;font-weight:500}
+  .pci-tag{background:var(--red-light);color:var(--red);font-size:9.5px;padding:1px 6px;
+    border-radius:4px;border:1px solid #fca5a5;margin-left:4px;font-weight:700}
+
+  .setup-container{background:var(--surface);border:1px solid #fca5a5;border-radius:var(--r2);box-shadow:var(--s1);overflow:hidden}
+  .setup-container .sec-hdr{background:var(--red-light)}
+  .saved-info{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px;margin-bottom:12px;text-align:center}
+  .saved-info .label{font-size:10px;color:#16a34a;font-weight:600;margin-bottom:4px}
+  .saved-info .value{font-size:13px;font-weight:700;color:#065f46}
+  .fg{margin-bottom:9px}
+  .fl{font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px;display:block}
+  .fi{width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:var(--r1);
+    font-size:12px;font-family:inherit;color:var(--text);background:var(--bg);outline:none}
+  .fi:focus{border-color:var(--red);background:#fff}
+
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    padding:8px 14px;border-radius:var(--r1);font-size:12px;font-weight:600;
+    font-family:inherit;cursor:pointer;border:none;transition:all .15s}
+  .btn-p{background:var(--red);color:#fff;box-shadow:0 2px 8px rgba(220,38,38,.3)}
+  .btn-p:hover{background:var(--red-dark)}
+  .btn-s{background:var(--bg);color:var(--text);border:1.5px solid var(--border)}
+  .btn-s:hover{background:#f3f4f6}
+  .btn-sm{padding:6px 11px;font-size:11px}
+  .btn-full{width:100%}
+  .btn-row{display:flex;gap:7px}
+
+  .toast{position:fixed;bottom:13px;left:50%;transform:translateX(-50%) translateY(60px);
+    background:#1f2937;color:#fff;font-size:11.5px;padding:7px 15px;border-radius:20px;
+    box-shadow:0 8px 24px rgba(0,0,0,.15);transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+    pointer-events:none;white-space:nowrap;z-index:999}
+  .toast.show{transform:translateX(-50%) translateY(0)}
+
+  .footer{padding:9px 13px;border-top:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between}
+  .f-brand{font-size:10px;color:var(--light);font-weight:500}
+  .f-ver{font-size:10px;color:var(--light);background:var(--bg);border:1px solid var(--border);
+    padding:2px 7px;border-radius:6px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="logo">🛡️</div>
+    <div class="hdr-title">
+      <h1>Compliance DLP</h1>
+      <p>Data Loss Prevention · Security Dashboard</p>
+    </div>
+    <div class="pill"><div class="dot"></div>ACTIVE</div>
+  </div>
+
+  <!-- Profile -->
+  <div class="profile">
+    <div class="avatar" id="user-avatar">?</div>
+    <div class="profile-mid">
+      <div class="p-name" id="user-username">Not Configured</div>
+      <div class="p-email" id="user-email">—</div>
+    </div>
+    <div class="profile-ip">
+      <div class="p-ip-label">🌐 IP Address</div>
+      <div class="p-ip-val" id="user-ip">Fetching...</div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="body">
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat hi">
+      <div class="stat-n" id="stat-total">0</div>
+      <div class="stat-l">Total Blocked</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n" id="stat-today">0</div>
+      <div class="stat-l">Today</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n" id="stat-pci">0</div>
+      <div class="stat-l">PCI Violations</div>
+    </div>
+  </div>
+
+  <!-- Feature badges -->
+  <div class="sec">
+    <div class="sec-hdr"><span class="sec-ico">✅</span><span class="sec-ttl">Active DLP Capabilities</span></div>
+    <div class="sec-body">
+      <div class="badges">
+        <span class="badge g"><span class="bdot"></span>Upload Blocking &gt;5MB</span>
+        <span class="badge g"><span class="bdot"></span>Download Blocking &gt;10MB</span>
+        <span class="badge g"><span class="bdot"></span>Risk Scoring</span>
+        <span class="badge g"><span class="bdot"></span>PCI File Content Scan</span>
+        <span class="badge r"><span class="bdot"></span>Domain Blacklisting</span>
+        <span class="badge r"><span class="bdot"></span>Extension Blocking</span>
+        <span class="badge r"><span class="bdot"></span>PCI DSS Protection</span>
+        <span class="badge b"><span class="bdot"></span>Drag-Drop Blocking</span>
+        <span class="badge b"><span class="bdot"></span>Copy-Paste Blocking</span>
+        <span class="badge b"><span class="bdot"></span>WhatsApp Protection</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Policy -->
+  <div class="sec">
+    <div class="sec-hdr"><span class="sec-ico">⚙️</span><span class="sec-ttl">Current Policy Configuration</span></div>
+    <div class="sec-body">
+      <div class="prow"><span class="pk">Upload Size Limit</span><span class="pv">5 MB</span></div>
+      <div class="prow"><span class="pk">Download Size Limit</span><span class="pv">10 MB</span></div>
+      <div class="prow"><span class="pk">Risk Score Range</span><span class="pv">85–95 / 100</span></div>
+      <div class="prow"><span class="pk">PCI DSS Patterns</span><span class="pv">Card · SSN · CNIC · Phone</span></div>
+      <div class="prow"><span class="pk">Blacklisted Domains</span><span class="pv">6 Domains</span></div>
+      <div class="prow"><span class="pk">Blocked Extensions</span><span class="pv">exe, ps1, bat, vbs +8</span></div>
+    </div>
+  </div>
+
+  <!-- Log -->
+  <div class="sec">
+    <div class="sec-hdr"><span class="sec-ico">📋</span><span class="sec-ttl">Recent Blocked Events</span></div>
+    <div class="sec-body" id="log-container">
+      <div class="log-empty">No blocked events yet.<br>Events appear here in real-time.</div>
+    </div>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="btn-row">
+    <button class="btn btn-s btn-sm" id="btn-test" style="flex:1">🔌 Test Server</button>
+    <button class="btn btn-s btn-sm" id="btn-refresh" style="flex:1">🔄 Refresh</button>
+  </div>
+
+  <!-- One-time setup (only shown if not configured) -->
+  <div id="setup-section" style="display:none;">
+    <div class="setup-container">
+      <div class="sec-hdr"><span class="sec-ico">🔐</span><span class="sec-ttl">First Time Setup</span></div>
+      <div class="sec-body">
+        <p style="font-size:11.5px;color:var(--muted);margin-bottom:10px;">
+          Please enter your email address. This will be used to identify you in the security dashboard.
+        </p>
+        <div class="fg">
+          <label class="fl" for="inp-email">Email Address</label>
+          <input class="fi" type="email" id="inp-email" placeholder="user@company.com" value="mudassar.ali@digikhata.pk">
+        </div>
+        <div class="fg" style="margin-bottom:12px">
+          <label class="fl" for="inp-pass">Password</label>
+          <input class="fi" type="password" id="inp-pass" placeholder="Enter password" value='7?Qz=4"B:Ezp;nn|'>
+        </div>
+        <div id="username-preview" style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;
+          padding:8px 12px;margin-bottom:11px;font-size:11.5px;color:#16a34a;display:none;">
+          👤 Username will be: <strong id="uname-txt"></strong>
+        </div>
+        <button class="btn btn-p btn-full" id="btn-save">💾 Save & Activate Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Already configured message -->
+  <div id="configured-section" style="display:none;">
+    <div class="setup-container">
+      <div class="sec-hdr"><span class="sec-ico">✅</span><span class="sec-ttl">Account Configured</span></div>
+      <div class="sec-body">
+        <div class="saved-info">
+          <div class="label">🔐 Your Account Email</div>
+          <div class="value" id="saved-email">—</div>
+          <div style="font-size:10px;color:#6b7280;margin-top:5px">✓ Account is active and monitoring</div>
+        </div>
+        <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:8px 12px;font-size:11px;color:#991b1b;text-align:center;">
+          ⚠️ Email cannot be changed once saved. Contact admin for changes.
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span class="f-brand">🛡️ Compliance DLP</span>
+  <span class="f-ver">v2.0 · MV3</span>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="popup.js"></script>
+</body>
+</html>

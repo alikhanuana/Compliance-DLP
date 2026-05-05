@@ -1,0 +1,41 @@
+[
+  {
+    "id": "1",
+    "username": "mudassar.ali",
+    "ip": "192.168.1.100",
+    "filename": "invoice.pdf",
+    "size": 2.5,
+    "domain": "drive.google.com",
+    "status": "allowed",
+    "reason": "Whitelisted domain",
+    "risk_score": 15,
+    "hasSensitiveData": false,
+    "timestamp": "2026-05-04 10:30:00"
+  },
+  {
+    "id": "2",
+    "username": "ahmad.raza",
+    "ip": "192.168.1.101",
+    "filename": "card_data.csv",
+    "size": 0.5,
+    "domain": "wetransfer.com",
+    "status": "blocked",
+    "reason": "PCI DSS violation - Credit card detected",
+    "risk_score": 95,
+    "hasSensitiveData": true,
+    "timestamp": "2026-05-04 09:15:00"
+  },
+  {
+    "id": "3",
+    "username": "sarah.khan",
+    "ip": "192.168.1.102",
+    "filename": "backup.zip",
+    "size": 15.0,
+    "domain": "mega.nz",
+    "status": "blocked",
+    "reason": "File size exceeds limit (15MB > 10MB)",
+    "risk_score": 70,
+    "hasSensitiveData": false,
+    "timestamp": "2026-05-04 08:45:00"
+  }
+]
