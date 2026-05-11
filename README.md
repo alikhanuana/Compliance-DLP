@@ -13,7 +13,7 @@
 
 **Browser-Native Data Loss Prevention**
 
-*Clipboard control · File upload/download enforcement · WhatsApp protection · PCI DSS compliance*
+*Clipboard control · Drag & drop Inspection · File upload/download enforcement · WhatsApp protection · PCI DSS compliance*
 
 <br/>
 
